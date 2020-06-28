@@ -1,0 +1,26 @@
+{
+  "name": "fii-crawler",
+  "version": "1.0.0",
+  "description": "Projeto para coleta de dados de FIIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cassioscofield/fii-crawler.git"
+  },
+  "keywords": [
+    "fii",
+    "b3",
+    "crawler",
+    "ticker",
+    "bovespa"
+  ],
+  "author": "Cássio Scofield",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cassioscofield/fii-crawler/issues"
+  },
+  "homepage": "https://github.com/cassioscofield/fii-crawler#readme"
+}
