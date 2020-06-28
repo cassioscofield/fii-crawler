@@ -4,6 +4,7 @@
   "description": "Projeto para coleta de dados de FIIs",
   "main": "index.js",
   "scripts": {
+    "start": "node ./index.js BCFF11.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/cassioscofield/fii-crawler/issues"
   },
-  "homepage": "https://github.com/cassioscofield/fii-crawler#readme"
+  "homepage": "https://github.com/cassioscofield/fii-crawler#readme",
+  "dependencies": {
+    "request-promise": "^4.2.5"
+  }
 }
