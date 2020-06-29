@@ -1,9 +1,12 @@
-var rp = require('request-promise');
+const rp = require('request-promise');
+const sleep = require('sleep');
+const SLEEP_IN_SECONDS = parseInt(process.env.SLEEP_IN_SECONDS, 10) || 5;
+console.info('SLEEP_IN_SECONDS', SLEEP_IN_SECONDS);
 
 const getPriceByTicker = function (ticker, start, end) {
   let parameters = `ticker=${ticker}&start=${start}&end=${end}`;
   let url = `https://statusinvest.com.br/category/tickerpricerange?${parameters}`;
-  var options = {
+  const options = {
     method: 'GET',
     uri: url,
     body: {},
@@ -26,7 +29,8 @@ const getPriceByTickerBatch = function (tickers, start, end) {
     let prices = {};
     for (ticker of tickers) {
       try {
-        dataItem = await getPriceByTicker(ticker, start, end);
+        let dataItem = await getPriceByTicker(ticker, start, end);
+        sleep.sleep(SLEEP_IN_SECONDS);
         prices[ticker] = dataItem;
       } catch (error) {
         console.error('getPriceByTickerBatch.error', {ticker, error})

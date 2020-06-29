@@ -18,4 +18,8 @@ let tickers = require('./input/' + filename);
 let start = '2010-01-01';
 let end = new Date().toISOString();
 
-getDataFromTickers(tickers, start, end);
+getDataFromTickers(tickers, start, end).then(result => {
+  console.log('getDataFromTickers.result', result);
+}).catch(error => {
+  console.error('getDataFromTickers.error', error);
+});
