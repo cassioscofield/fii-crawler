@@ -26304,6 +26304,28 @@
       "priceFactor": 0.9992217898832684,
       "totalReturnFactor": 1.379841190484957,
       "totalReturn": 124.02012620078793
+    },
+    {
+      "ticker": "BCFF11",
+      "date": "2020-06-29T03:00:00.000Z",
+      "price": 89.07,
+      "adjustmentFactor": 1,
+      "totalEarnings": 26.028853491996866,
+      "earningsReinvestedFactor": 1.3809158331566744,
+      "priceFactor": 0.9909879839786382,
+      "totalReturnFactor": 1.3684709975441143,
+      "totalReturn": 121.88971175125425
+    },
+    {
+      "ticker": "BCFF11",
+      "date": "2020-06-30T03:00:00.000Z",
+      "price": 89.91,
+      "adjustmentFactor": 1,
+      "totalEarnings": 26.028853491996866,
+      "earningsReinvestedFactor": 1.3809158331566744,
+      "priceFactor": 1.0094307847760189,
+      "totalReturnFactor": 1.3939389531729718,
+      "totalReturn": 125.3290512797819
     }
   ]
 }
