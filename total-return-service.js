@@ -1,20 +1,20 @@
 const moment  = require('moment');
 const getTotalReturnByTicker = function (ticker, prices, earnings) {
   let dates = {};
-  for (earning of earnings) {
+  for (let earning of earnings) {
     date = moment(earning.ed, "DD/MM/YYYY").format();
     dates[date] = {
       date: new Date(date),
       ticker: ticker,
       earning: earning.v
-    }
+    };
   }
-  for (price of prices) {
+  for (let price of prices) {
     date = moment(price.date, "DD/MM/YY").format();
     dates[date] = dates[date] || { ticker: ticker, date: new Date(date) };
     dates[date].price = price.price;
   }
-  for (date in dates) {
+  for (let date in dates) {
   }
   let values = Object.values(dates).sort((a, b) => a.date - b.date)
   values[0].totalReturnFactor = 1.0;
@@ -30,7 +30,7 @@ const getTotalReturnByTicker = function (ticker, prices, earnings) {
       value.totalEarnings = previousValue.totalEarnings + value.earning;
       value.earningsReinvestedFactor = previousValue.earningsReinvestedFactor * value.adjustmentFactor;
     } else {
-      value.adjustmentFactor = 1.0
+      value.adjustmentFactor = 1.0;
       value.totalEarnings = previousValue.totalEarnings;
       value.earningsReinvestedFactor = previousValue.earningsReinvestedFactor;
     }
@@ -39,11 +39,11 @@ const getTotalReturnByTicker = function (ticker, prices, earnings) {
     value.totalReturn = value.price * value.totalReturnFactor;
   }
   return values;
-}
+};
 
 const getTotalReturnByTickerBatch = function (tickers, prices, earnings) {
   let totalReturn = {};
-  for (ticker of tickers) {
+  for (let ticker of tickers) {
     try {
       totalReturn[ticker] = getTotalReturnByTicker(ticker, prices[ticker], earnings[ticker]);
     } catch (error) {
@@ -52,9 +52,9 @@ const getTotalReturnByTickerBatch = function (tickers, prices, earnings) {
   }
   console.log('getTotalReturnByTickerBatch.prices', JSON.stringify(totalReturn, null, 2));
   return totalReturn;
-}
+};
 
 module.exports = {
   getTotalReturnByTicker,
   getTotalReturnByTickerBatch
-}
+};

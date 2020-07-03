@@ -13,14 +13,14 @@ if (!arg) {
 
 let filename = arg;
 let tickers = require('./input/' + filename);
-let start = '2010-01-01';
+let start = '2016-06-07';
 let end = new Date().toISOString();
 
 const toFlatCSV = function (data) {
   return new Promise(async (resolve, reject) => {
     for (ticker of Object.keys(data)) {
       data[ticker].ticker = ticker;
-      for (i of data[ticker]) {
+      for (let i of data[ticker]) {
         i.date = moment(i.date).format('YYYY-MM-DD');
       }
     }

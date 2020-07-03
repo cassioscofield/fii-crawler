@@ -27,13 +27,13 @@ const getEarningsByTicker = function (ticker) {
 const getEarningsByTickerBatch = function (tickers) {
   return new Promise(async (resolve, reject) => {
     let prices = {};
-    for (ticker of tickers) {
+    for (let ticker of tickers) {
       try {
         let dataItem = await getEarningsByTicker(ticker);
         sleep.sleep(SLEEP_IN_SECONDS);
         prices[ticker] = dataItem;
       } catch (error) {
-        console.error('getEarningsByTickerBatch.error', {ticker, error})
+        console.error('getEarningsByTickerBatch.error', {ticker, error});
       }
     }
     console.log('getEarningsByTickerBatch.prices', JSON.stringify(prices, null, 2));
