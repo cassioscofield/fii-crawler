@@ -14,29 +14,40 @@ const getTotalReturnByTicker = function (ticker, prices, earnings) {
     dates[date] = dates[date] || { ticker: ticker, date: new Date(date) };
     dates[date].price = price.price;
   }
-  for (let date in dates) {
-  }
-  let values = Object.values(dates).sort((a, b) => a.date - b.date)
-  values[0].totalReturnFactor = 1.0;
-  values[0].adjustmentFactor = 1.0;
-  values[0].totalEarnings = values[0].earning || 0.0;
-  values[0].totalReturn = values[0].price;
-  values[0].earningsReinvestedFactor = 1.0;
-  for (var i=1;i<values.length;i++) {
-    value = values[i];
-    previousValue = values[i-1];
+
+  let values = Object.values(dates)
+    .sort((a, b) => a.date - b.date)
+    .filter(a => a.earning && a.price);
+
+  value = values[0];
+  value.totalReturnFactor = 1.0;
+  value.adjustmentFactor = 1.0;
+  value.cumulativeEarningsPerShare = value.earning;
+  value.totalReturn = value.price;
+  value.earningsReinvestedFactor = 1.0;
+  value.totalEarnings =  value.earning || 0.0;
+  value.totalShares = 1.0;
+  value.priceFactor = 1.0;
+
+  for (let i = 1;i<values.length;i++) {
+    let value = values[i];
+    let previousValue = values[i-1];
     if (value.earning) {
+      value.totalShares = previousValue.totalShares + value.earning/value.price;
       value.adjustmentFactor = 1 + value.earning/value.price;
-      value.totalEarnings = previousValue.totalEarnings + value.earning;
+      value.cumulativeEarningsPerShare = previousValue.cumulativeEarningsPerShare + value.earning;
+      value.totalEarnings = previousValue.totalEarnings + value.earning * value.totalShares;
       value.earningsReinvestedFactor = previousValue.earningsReinvestedFactor * value.adjustmentFactor;
     } else {
+      value.totalShares = previousValue.totalShares;
       value.adjustmentFactor = 1.0;
-      value.totalEarnings = previousValue.totalEarnings;
+      value.cumulativeEarningsPerShare = previousValue.cumulativeEarningsPerShare;
       value.earningsReinvestedFactor = previousValue.earningsReinvestedFactor;
+      value.totalEarnings = previousValue.totalEarnings;
     }
     value.priceFactor = value.price / previousValue.price;
     value.totalReturnFactor = value.earningsReinvestedFactor * value.priceFactor;
-    value.totalReturn = value.price * value.totalReturnFactor;
+    value.totalReturn = value.priceFactor * value.totalShares;
   }
   return values;
 };

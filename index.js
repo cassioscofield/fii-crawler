@@ -13,7 +13,7 @@ if (!arg) {
 
 let filename = arg;
 let tickers = require('./input/' + filename);
-let start = '2016-06-07';
+let start = '2016-07-01';
 let end = new Date().toISOString();
 
 const toFlatCSV = function (data) {
