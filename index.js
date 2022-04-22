@@ -13,8 +13,6 @@ if (!arg) {
 
 let filename = arg;
 let tickers = require('./input/' + filename);
-let start = '2016-07-01';
-let end = new Date().toISOString();
 
 const toFlatCSV = function (data) {
   return new Promise(async (resolve, reject) => {
@@ -38,9 +36,9 @@ const totalReturnToCSV = async function (totalReturnForTickers) {
   return fs.writeFile('./output/total-return-'+filename.replace('.json','.csv'), totalReturnForTickersAsCSV, 'utf8');
 }
 
-const getDataFromTickers = function (tickers, start, end) {
+const getDataFromTickers = function (tickers) {
   return new Promise(async (resolve, reject) => {
-    const priceForTickers = await pricesService.getPriceByTickerBatch(tickers, start, end);
+    const priceForTickers = await pricesService.getPriceByTickerBatch(tickers);
     const priceForTickersAsString = JSON.stringify(priceForTickers, null, 2);
     await fs.writeFile('./output/price-'+filename, priceForTickersAsString, 'utf8');
     const earningsForTickers = await earningsService.getEarningsByTickerBatch(tickers);
@@ -53,7 +51,7 @@ const getDataFromTickers = function (tickers, start, end) {
   });
 };
 
-getDataFromTickers(tickers, start, end).then(result => {
+getDataFromTickers(tickers).then(result => {
   console.log('getDataFromTickers.result', result);
   totalReturnToCSV(result);
 }).catch(error => {

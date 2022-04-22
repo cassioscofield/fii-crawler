@@ -2,21 +2,24 @@ const rp = require('request-promise');
 const sleep = require('sleep');
 const SLEEP_IN_SECONDS = parseInt(process.env.SLEEP_IN_SECONDS, 10) || 5;
 console.info('SLEEP_IN_SECONDS', SLEEP_IN_SECONDS);
+const PERIOD_5_YEARS = 4;
 
-const getPriceByTicker = function (ticker, start, end) {
-  let parameters = `ticker=${ticker}&start=${start}&end=${end}`;
-  let url = `https://statusinvest.com.br/category/tickerpricerange?${parameters}`;
+const getPriceByTicker = function (ticker) {
+  let url = `https://statusinvest.com.br/fii/tickerprice`
   const options = {
-    method: 'GET',
+    method: 'POST',
     uri: url,
-    body: {},
+    form: {
+      ticker,
+      type: PERIOD_5_YEARS
+    },
     json: true
   };
   console.log('getPriceByTicker.options', options);
   return new Promise((resolve, reject) => {
     rp(options).then(body => {
       console.log('getPriceByTicker.then', {body, options});
-      resolve(body.data.prices);
+      resolve(body[0].prices);
     }).catch(error => {
       console.error('getPriceByTicker.catch', {error, options});
       reject(error);
@@ -24,12 +27,12 @@ const getPriceByTicker = function (ticker, start, end) {
   });
 }
 
-const getPriceByTickerBatch = function (tickers, start, end) {
+const getPriceByTickerBatch = function (tickers) {
   return new Promise(async (resolve, reject) => {
     let prices = {};
     for (let ticker of tickers) {
       try {
-        let dataItem = await getPriceByTicker(ticker, start, end);
+        let dataItem = await getPriceByTicker(ticker);
         sleep.sleep(SLEEP_IN_SECONDS);
         prices[ticker] = dataItem;
       } catch (error) {
