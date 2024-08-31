@@ -1,5 +1,7 @@
 const rp = require('request-promise');
-const sleep = require('sleep');
+function sleep(ms) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
+}
 const SLEEP_IN_SECONDS = parseInt(process.env.SLEEP_IN_SECONDS, 10) || 5;
 console.info('SLEEP_IN_SECONDS', SLEEP_IN_SECONDS);
 const PERIOD_5_YEARS = 4;
@@ -8,10 +10,14 @@ const getPriceByTicker = function (ticker) {
   let url = `https://statusinvest.com.br/fii/tickerprice`
   const options = {
     method: 'POST',
+    headers: {
+      'user-agent': 'X',
+    },
     uri: url,
     form: {
       ticker,
-      type: PERIOD_5_YEARS
+      type: PERIOD_5_YEARS,
+      currences: 1,
     },
     json: true
   };
@@ -33,7 +39,7 @@ const getPriceByTickerBatch = function (tickers) {
     for (let ticker of tickers) {
       try {
         let dataItem = await getPriceByTicker(ticker);
-        sleep.sleep(SLEEP_IN_SECONDS);
+        sleep(SLEEP_IN_SECONDS);
         prices[ticker] = dataItem;
       } catch (error) {
         console.error('getPriceByTickerBatch.error', {ticker, error});
